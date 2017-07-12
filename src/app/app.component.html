@@ -1,3 +1,47 @@
-<h1>
-  {{title}}
-</h1>
+<table class="table grid">
+  <thead>
+  </thead>
+  <tbody>
+    <tr ng-show="showGrid">
+      <!--<td class="cell" *ngFor="let cell of cells"><button class="cellButton" (click)="showPossibilities(cell.id)">{{cell.box}}</button></td>-->
+            <td class="cell" *ngFor="let cell of cells">
+              <button class="cellButton" (click)="showPossibilities(cell.id)">
+                <table>
+                  <thead></thead>
+                  <tbody>
+                    <tr>
+                      <td>{{cell.possibilities[0]}}</td>
+                      <td>{{cell.possibilities[1]}}</td>
+                      <td>{{cell.possibilities[2]}}</td>
+                    </tr>
+                    <tr>
+                      <td>{{cell.possibilities[3]}}</td>
+                      <td>{{cell.possibilities[4]}}</td>
+                      <td>{{cell.possibilities[5]}}</td>
+                    </tr>
+                    <tr>
+                      <td>{{cell.possibilities[6]}}</td>
+                      <td>{{cell.possibilities[7]}}</td>
+                      <td>{{cell.possibilities[8]}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </button></td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+<button *ngFor="let poss of currentPossibilities" class="button" (click)="removePossibility(poss)">{{poss}}</button>
+
+
+<br>
+<br>
+<br>
+<h3>Rows X Columns</h3>
+<div ></div>
+<button *ngFor="let size of gridSizes" class="button" (click)="setRowColumnNumber(size)">{{size}}</button>
+
+<br>
+<button class="button" (click)="addCell()">Submit</button>
