@@ -13,11 +13,13 @@ export class AppComponent {
   colNumber;
   boxNumber;
 
+  tiles = []
+
   gridSizes = [
     4,
     9
   ]
-
+  
   cells = [
   ]
 
@@ -38,6 +40,7 @@ export class AppComponent {
           "num" : null,
           "possibilities" : [1,2,3,4]
         }
+        this.tiles[i] = {text: this.cells[i].id, cols: 1, rows: 1, color: 'lightblue'};
       }
     }else if(this.rowsColumns == 9) {
       for (var i = 0; i < this.rowsColumns*this.rowsColumns; i++) {
@@ -53,8 +56,24 @@ export class AppComponent {
           "num" : null,
           "possibilities" : [1,2,3,4,5,6,7,8,9]
         }
+        this.tiles[i] = {
+          tileData: {
+            "row" : this.rowNumber,
+            "col" : this.colNumber,
+            "box" : this.boxNumber,
+            "id" : i,
+            "num" : null,
+            "possibilities" : [1,2,3,4,5,6,7,8,9]
+          }, 
+          cols: 1, 
+          rows: 1, 
+          color: 'lightblue'};
       }
     }
+  }
+
+  checkClick(index: number) {
+    console.log(index + " clicked");
   }
 
   getColNumbers(i: number) {
@@ -72,45 +91,32 @@ export class AppComponent {
   }
 
   getBoxNumbers(i: number) {
-    this.cells.forEach(c => {
-      
-      // for (var i = 0, j = 0; i < 3; i++, j+3) {
-      //   if(c.row == j+1 || c.row == j+2 || c.row == j+3) {
-      //     if(c.col == 1 || c.col == 2 || c.col == 3) {
-      //       c.box = j+1;
-      //     }else if(c.col == 4 || c.col == 5 || c.col == 6) {
-      //       c.box = j+2;
-      //     }else if(c.col == 7 || c.col == 8 || c.col == 9) {
-      //       c.box = j+3;
-      //     }
-      //   }
-      // }
-
-      if(c.row == 1 || c.row == 2 || c.row == 3) {
-        if(c.col == 1 || c.col == 2 || c.col == 3) {
-          c.box = 1;
-        }else if(c.col == 4 || c.col == 5 || c.col == 6) {
-          c.box = 2;
-        }else if(c.col == 7 || c.col == 8 || c.col == 9) {
-          c.box = 3;
+    this.tiles.forEach(c => {
+      if(c.tileData.row == 1 || c.tileData.row == 2 || c.tileData.row == 3) {
+        if(c.tileData.col == 1 || c.tileData.col == 2 || c.tileData.col == 3) {
+          c.tileData.box = 1;
+        }else if(c.tileData.col == 4 || c.tileData.col == 5 || c.tileData.col == 6) {
+          c.tileData.box = 2;
+        }else if(c.tileData.col == 7 || c.tileData.col == 8 || c.tileData.col == 9) {
+          c.tileData.box = 3;
         }
       }
-      if(c.row == 4 || c.row == 5 || c.row == 6) {
-        if(c.col == 1 || c.col == 2 || c.col == 3) {
-          c.box = 4;
-        }else if(c.col == 4 || c.col == 5 || c.col == 6) {
-          c.box = 5;
-        }else if(c.col == 7 || c.col == 8 || c.col == 9) {
-          c.box = 6;
+      if(c.tileData.row == 4 || c.tileData.row == 5 || c.tileData.row == 6) {
+        if(c.tileData.col == 1 || c.tileData.col == 2 || c.tileData.col == 3) {
+          c.tileData.box = 4;
+        }else if(c.tileData.col == 4 || c.tileData.col == 5 || c.tileData.col == 6) {
+          c.tileData.box = 5;
+        }else if(c.tileData.col == 7 || c.tileData.col == 8 || c.tileData.col == 9) {
+          c.tileData.box = 6;
         }
       }
-      if(c.row == 7 || c.row == 8 || c.row == 9) {
-        if(c.col == 1 || c.col == 2 || c.col == 3) {
-          c.box = 7;
-        }else if(c.col == 4 || c.col == 5 || c.col == 6) {
-          c.box = 8;
-        }else if(c.col == 7 || c.col == 8 || c.col == 9) {
-          c.box = 9;
+      if(c.tileData.row == 7 || c.tileData.row == 8 || c.tileData.row == 9) {
+        if(c.tileData.col == 1 || c.tileData.col == 2 || c.tileData.col == 3) {
+          c.tileData.box = 7;
+        }else if(c.tileData.col == 4 || c.tileData.col == 5 || c.tileData.col == 6) {
+          c.tileData.box = 8;
+        }else if(c.tileData.col == 7 || c.tileData.col == 8 || c.tileData.col == 9) {
+          c.tileData.box = 9;
         }
       }
     });
@@ -124,18 +130,18 @@ export class AppComponent {
     this.currentId = id;
     this.currentPossibilities = [];
 
-    this.cells[this.currentId].possibilities.forEach(e => {
+    this.tiles[this.currentId].tileData.possibilities.forEach(e => {
       this.currentPossibilities.push(e);
     });
   }
 
   removePossibility(poss: number) {
-    this.cells.forEach(e => {
-      if(e.id == this.currentId) {
-        e.possibilities.forEach((el, i) => {
+    this.tiles.forEach(e => {
+      if(e.tileData.id == this.currentId) {
+        e.tileData.possibilities.forEach((el, i) => {
           if(el == poss) {
-            this.cells[this.currentId].possibilities.push(this.cells[this.currentId].num);
-            this.cells[this.currentId].num = this.cells[this.currentId].possibilities[i];
+            this.tiles[this.currentId].tileData.possibilities.push(this.tiles[this.currentId].tileData.num);
+            this.tiles[this.currentId].tileData.num = this.tiles[this.currentId].tileData.possibilities[i];
             
             // for (var k = 0; k < 2; k++) {
             //   if(this.cells[this.currentId].row == this.cells[this.currentId].row) {
@@ -164,51 +170,51 @@ export class AppComponent {
               
             // }
 
-            this.cells.forEach((ele, ind) => {
-              if(ele.row == this.cells[this.currentId].row) {
-                ele.possibilities.forEach((p, index) => {
-                  if(p == this.cells[this.currentId].possibilities[i]) {
-                    // console.log(ele.possibilities[index]);
-                    console.log(ele.num);
-                    delete ele.possibilities[index];
-                  }
-                });
-              }
-              if(ele.col == this.cells[this.currentId].col) {
-                ele.possibilities.forEach((p, index) => {
-                  if(p == this.cells[this.currentId].possibilities[i]) {
-                    delete ele.possibilities[index];
-                  }
-                });
-              }
-              if(ele.box == this.cells[this.currentId].box) {
-                ele.possibilities.forEach((p, index) => {
-                  if(p == this.cells[this.currentId].possibilities[i]) {
-                    delete ele.possibilities[index];
-                  }
-                });
-              }
-              
-            });
-
-
-
-
-            // this.cells.forEach((ele) => {
+            // this.cells.forEach((ele, ind) => {
             //   if(ele.row == this.cells[this.currentId].row) {
-            //     delete ele.possibilities[i];
+            //     ele.possibilities.forEach((p, index) => {
+            //       if(p == this.cells[this.currentId].possibilities[i]) {
+            //         // console.log(ele.possibilities[index]);
+            //         console.log(ele.num);
+            //         delete ele.possibilities[index];
+            //       }
+            //     });
             //   }
             //   if(ele.col == this.cells[this.currentId].col) {
-            //     delete ele.possibilities[i];
+            //     ele.possibilities.forEach((p, index) => {
+            //       if(p == this.cells[this.currentId].possibilities[i]) {
+            //         delete ele.possibilities[index];
+            //       }
+            //     });
             //   }
             //   if(ele.box == this.cells[this.currentId].box) {
-            //     delete ele.possibilities[i];
+            //     ele.possibilities.forEach((p, index) => {
+            //       if(p == this.cells[this.currentId].possibilities[i]) {
+            //         delete ele.possibilities[index];
+            //       }
+            //     });
             //   }
+              
             // });
 
-            delete this.cells[this.currentId].possibilities[i];
 
-            this.currentPossibilities = this.cells[this.currentId].possibilities;
+
+
+            this.tiles.forEach((ele) => {
+              if(ele.tileData.row == this.tiles[this.currentId].tileData.row) {
+                delete ele.tileData.possibilities[i];
+              }
+              if(ele.tileData.col == this.tiles[this.currentId].tileData.col) {
+                delete ele.tileData.possibilities[i];
+              }
+              if(ele.tileData.box == this.tiles[this.currentId].tileData.box) {
+                delete ele.tileData.possibilities[i];
+              }
+            });
+
+            delete this.tiles[this.currentId].tileData.possibilities[i];
+
+            this.currentPossibilities = this.tiles[this.currentId].tileData.possibilities;
           }
         });
       }

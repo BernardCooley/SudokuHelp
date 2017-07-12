@@ -1,10 +1,25 @@
-<table class="table grid">
+<div class="gridContainer">
+  <md-grid-list cols="9" rowHeight="30px">
+    <md-grid-tile
+        (click)="checkClick(tile.tileData.id); showPossibilities(tile.tileData.id)"
+        *ngFor="let tile of tiles"
+        [colspan]="tile.cols"
+        [rowspan]="tile.rows"
+        [style.background]="tile.color">
+      {{tile.tileData.num}}
+    </md-grid-tile>
+  </md-grid-list>
+</div>
+
+
+
+<!-- <table class="table grid">
   <thead>
   </thead>
   <tbody>
     <tr ng-show="showGrid">
-      <!--<td class="cell" *ngFor="let cell of cells"><button class="cellButton" (click)="showPossibilities(cell.id)">{{cell.box}}</button></td>-->
-            <td class="cell" *ngFor="let cell of cells">
+      <td class="cell" *ngFor="let cell of cells"><button class="cellButton" (click)="showPossibilities(cell.id)">{{cell.num}}</button></td>
+             <td class="cell" *ngFor="let cell of cells">
               <button class="cellButton" (click)="showPossibilities(cell.id)">
                 <table>
                   <thead></thead>
@@ -26,14 +41,24 @@
                     </tr>
                   </tbody>
                 </table>
-              </button></td>
+              </button></td> 
     </tr>
   </tbody>
-</table>
+</table> -->
+
+<!-- <div class="gridContainer">
+  <div class="row" *ngFor="let cell of cells">
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><button class="cellButton" (click)="showPossibilities(cell.id)">{{cell.num}}</button></div>
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><button class="cellButton" (click)="showPossibilities(cell.id)">{{cell.num}}</button></div>
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><button class="cellButton" (click)="showPossibilities(cell.id)">{{cell.num}}</button></div>
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><button class="cellButton" (click)="showPossibilities(cell.id)">{{cell.num}}</button></div>
+  </div>
+</div> -->
 
 
 
-<button *ngFor="let poss of currentPossibilities" class="button" (click)="removePossibility(poss)">{{poss}}</button>
+
+ <button *ngFor="let poss of currentPossibilities" class="button" (click)="removePossibility(poss)">{{poss}}</button>
 
 
 <br>
@@ -44,4 +69,4 @@
 <button *ngFor="let size of gridSizes" class="button" (click)="setRowColumnNumber(size)">{{size}}</button>
 
 <br>
-<button class="button" (click)="addCell()">Submit</button>
+<button class="button" (click)="addCell()">Submit</button> 
