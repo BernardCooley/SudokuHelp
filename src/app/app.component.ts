@@ -13,18 +13,17 @@ export class AppComponent {
   colNumber;
   boxNumber;
 
-  tiles = []
+  tiles = [];
+
+  gridSize = 4;
 
   gridSizes = [
     4,
     9
-  ]
-  
-  cells = [
-  ]
+  ];
 
   addCell() {
-    this.cells = []
+    this.tiles = []
 
     if(this.rowsColumns == 4) {
       for (var i = 0; i < this.rowsColumns*this.rowsColumns; i++) {
@@ -32,15 +31,19 @@ export class AppComponent {
         this.colNumber = this.getColNumbers(i);
         this.boxNumber = this.getBoxNumbers(i);
 
-        this.cells[i] = {
-          "row" : this.rowNumber,
-          "col" : this.colNumber,
-          "box" : this.boxNumber,
-          "id" : i,
-          "num" : null,
-          "possibilities" : [1,2,3,4]
-        }
-        this.tiles[i] = {text: this.cells[i].id, cols: 1, rows: 1, color: 'lightblue'};
+        this.tiles[i] = {
+          tileData: {
+            "row" : this.rowNumber,
+            "col" : this.colNumber,
+            "box" : this.boxNumber,
+            "id" : i,
+            "num" : null,
+            "possibilities" : [1,2,3,4]
+          }, 
+          cols: 1, 
+          rows: 1, 
+          color: 'lightblue'
+        };
       }
     }else if(this.rowsColumns == 9) {
       for (var i = 0; i < this.rowsColumns*this.rowsColumns; i++) {
@@ -48,14 +51,6 @@ export class AppComponent {
         this.colNumber = this.getColNumbers(i);
         this.boxNumber = this.getBoxNumbers(i);
 
-        this.cells[i] = {
-          "row" : this.rowNumber,
-          "col" : this.colNumber,
-          "box" : this.boxNumber,
-          "id" : i,
-          "num" : null,
-          "possibilities" : [1,2,3,4,5,6,7,8,9]
-        }
         this.tiles[i] = {
           tileData: {
             "row" : this.rowNumber,
@@ -67,13 +62,10 @@ export class AppComponent {
           }, 
           cols: 1, 
           rows: 1, 
-          color: 'lightblue'};
+          color: 'lightblue'
+        };
       }
     }
-  }
-
-  checkClick(index: number) {
-    console.log(index + " clicked");
   }
 
   getColNumbers(i: number) {
@@ -135,7 +127,7 @@ export class AppComponent {
     });
   }
 
-  removePossibility(poss: number) {
+  modifyPossibilities(poss: number) {
     this.tiles.forEach(e => {
       if(e.tileData.id == this.currentId) {
         e.tileData.possibilities.forEach((el, i) => {
@@ -143,81 +135,32 @@ export class AppComponent {
             this.tiles[this.currentId].tileData.possibilities.push(this.tiles[this.currentId].tileData.num);
             this.tiles[this.currentId].tileData.num = this.tiles[this.currentId].tileData.possibilities[i];
             
-            // for (var k = 0; k < 2; k++) {
-            //   if(this.cells[this.currentId].row == this.cells[this.currentId].row) {
-            //     ele.possibilities.forEach((p, index) => {
-            //       if(p == this.cells[this.currentId].possibilities[i]) {
-            //         // console.log(ele.possibilities[index]);
-            //         console.log(ele.num);
-            //         delete ele.possibilities[index];
-            //       }
-            //     });
-            //   }
-            //   if(ele.col == this.cells[this.currentId].col) {
-            //     ele.possibilities.forEach((p, index) => {
-            //       if(p == this.cells[this.currentId].possibilities[i]) {
-            //         delete ele.possibilities[index];
-            //       }
-            //     });
-            //   }
-            //   if(ele.box == this.cells[this.currentId].box) {
-            //     ele.possibilities.forEach((p, index) => {
-            //       if(p == this.cells[this.currentId].possibilities[i]) {
-            //         delete ele.possibilities[index];
-            //       }
-            //     });
-            //   }
-              
-            // }
-
-            // this.cells.forEach((ele, ind) => {
-            //   if(ele.row == this.cells[this.currentId].row) {
-            //     ele.possibilities.forEach((p, index) => {
-            //       if(p == this.cells[this.currentId].possibilities[i]) {
-            //         // console.log(ele.possibilities[index]);
-            //         console.log(ele.num);
-            //         delete ele.possibilities[index];
-            //       }
-            //     });
-            //   }
-            //   if(ele.col == this.cells[this.currentId].col) {
-            //     ele.possibilities.forEach((p, index) => {
-            //       if(p == this.cells[this.currentId].possibilities[i]) {
-            //         delete ele.possibilities[index];
-            //       }
-            //     });
-            //   }
-            //   if(ele.box == this.cells[this.currentId].box) {
-            //     ele.possibilities.forEach((p, index) => {
-            //       if(p == this.cells[this.currentId].possibilities[i]) {
-            //         delete ele.possibilities[index];
-            //       }
-            //     });
-            //   }
-              
-            // });
-
-
-
-
             this.tiles.forEach((ele) => {
               if(ele.tileData.row == this.tiles[this.currentId].tileData.row) {
-                delete ele.tileData.possibilities[i];
+                this.removePossibilitiesByValue(poss, ele.tileData.possibilities);
               }
               if(ele.tileData.col == this.tiles[this.currentId].tileData.col) {
-                delete ele.tileData.possibilities[i];
+                this.removePossibilitiesByValue(poss, ele.tileData.possibilities);
               }
               if(ele.tileData.box == this.tiles[this.currentId].tileData.box) {
-                delete ele.tileData.possibilities[i];
+                this.removePossibilitiesByValue(poss, ele.tileData.possibilities);
               }
             });
 
-            delete this.tiles[this.currentId].tileData.possibilities[i];
+            this.removePossibilitiesByValue(poss, this.tiles[this.currentId].tileData.possibilities);
 
-            this.currentPossibilities = this.tiles[this.currentId].tileData.possibilities;
+            this.showPossibilities(this.currentId);
           }
         });
       }
     });
   }
+
+  removePossibilitiesByValue(value: number, possibilities: Array<number>) {
+    let index: number = possibilities.indexOf(value);
+    if (index !== -1) {
+      possibilities.splice(index, 1);
+    }
+  }
+
 }

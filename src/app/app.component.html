@@ -1,12 +1,12 @@
 <div class="gridContainer">
   <md-grid-list cols="9" rowHeight="30px">
     <md-grid-tile
-        (click)="checkClick(tile.tileData.id); showPossibilities(tile.tileData.id)"
+        (click)="showPossibilities(tile.tileData.id)"
         *ngFor="let tile of tiles"
         [colspan]="tile.cols"
         [rowspan]="tile.rows"
         [style.background]="tile.color">
-      {{tile.tileData.num}}
+      {{tile.tileData.num}} --- {{tile.tileData.possibilities}}
     </md-grid-tile>
   </md-grid-list>
 </div>
@@ -58,7 +58,7 @@
 
 
 
- <button *ngFor="let poss of currentPossibilities" class="button" (click)="removePossibility(poss)">{{poss}}</button>
+ <button *ngFor="let poss of currentPossibilities" class="button" (click)="modifyPossibilities(poss)">{{poss}}</button>
 
 
 <br>
